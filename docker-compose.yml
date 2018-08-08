@@ -1,0 +1,179 @@
+version: '2'
+
+services:
+
+    apache:
+        image: 'wodby/php-apache:$APACHE_TAG'
+        container_name: '${PROJECT_NAME}_apache'
+        networks:
+            - default
+            - traefik
+        depends_on:
+            - php
+        environment:
+            APACHE_LOG_LEVEL: $APACHE_LOG_LEVEL
+            APACHE_BACKEND_HOST: php
+            APACHE_SERVER_ROOT: $WEB_SERVER_ROOT
+        volumes:
+            - './:/var/www/html:cached'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:apache.${PROJECT_BASE_URL}'
+
+    mariadb:
+        image: 'wodby/mariadb:$MARIADB_TAG'
+        container_name: '${PROJECT_NAME}_mariadb'
+        stop_grace_period: 30s
+        environment:
+            MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+            MYSQL_DATABASE: $DB_NAME
+            MYSQL_USER: $DB_USER
+            MYSQL_PASSWORD: $DB_PASSWORD
+        volumes:
+            - './backups:/mnt/backups'
+
+    memcached:
+        container_name: '${PROJECT_NAME}_memcached'
+        image: 'wodby/memcached:$MEMCACHED_TAG'
+
+    nginx:
+        image: 'wodby/drupal-nginx:$NGINX_TAG'
+        container_name: '${PROJECT_NAME}_nginx'
+        networks:
+            - default
+            - traefik
+        depends_on:
+            - php
+        environment:
+            NGINX_STATIC_CONTENT_OPEN_FILE_CACHE: $NGINX_STATIC_CONTENT_OPEN_FILE_CACHE
+            NGINX_ERROR_LOG_LEVEL: $NGINX_ERROR_LOG_LEVEL
+            NGINX_BACKEND_HOST: php
+            NGINX_SERVER_ROOT: $WEB_SERVER_ROOT
+        volumes:
+            - './:/var/www/html:cached'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
+
+    php:
+        image: 'wodby/drupal-php:$PHP_TAG'
+        container_name: '${PROJECT_NAME}_php'
+        environment:
+            PHP_SENDMAIL_PATH: $PHP_SENDMAIL_PATH
+            DB_HOST: $DB_HOST
+            DB_USER: $DB_USER
+            DB_PASSWORD: $DB_PASSWORD
+            DB_NAME: $DB_NAME
+            DB_DRIVER: $DB_DRIVER
+            DRUPAL_ENVIRONMENT: $DRUPAL_ENVIRONMENT
+            PHP_XDEBUG: $PHP_XDEBUG
+            PHP_XDEBUG_DEFAULT_ENABLE: $PHP_XDEBUG_DEFAULT_ENABLE
+            PHP_XDEBUG_REMOTE_CONNECT_BACK: $PHP_XDEBUG_REMOTE_CONNECT_BACK
+            PHP_XDEBUG_REMOTE_HOST: $PHP_XDEBUG_REMOTE_HOST
+        volumes:
+            - './:/var/www/html:cached'
+
+    redis:
+        container_name: '${PROJECT_NAME}_redis'
+        image: 'wodby/redis:$REDIS_TAG'
+
+    solr:
+        image: 'wodby/drupal-solr:$SOLR_TAG'
+        container_name: '${PROJECT_NAME}_solr'
+        networks:
+            - default
+            - traefik
+        environment:
+            SOLR_HEAP: $SOLR_HEAP
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=8983'
+            - 'traefik.frontend.rule=Host:solr.${PROJECT_BASE_URL}'
+
+    varnish:
+        image: 'wodby/drupal-varnish:$VARNISH_TAG'
+        container_name: '${PROJECT_NAME}_varnish'
+        networks:
+            - default
+            - traefik
+        depends_on:
+            - nginx
+        environment:
+            VARNISH_SECRET: $VARNISH_SECRET
+            VARNISH_BACKEND_HOST: nginx
+            VARNISH_BACKEND_PORT: 80
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=6081'
+            - 'traefik.frontend.rule=Host:varnish.${PROJECT_BASE_URL}'
+
+    adminer:
+        image: 'wodby/adminer:$ADMINER_TAG'
+        container_name: '${PROJECT_NAME}_adminer'
+        networks:
+            - default
+            - traefik
+        environment:
+            ADMINER_SALT: $ADMINER_SALT
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=9000'
+            - 'traefik.frontend.rule=Host:adminer.${PROJECT_BASE_URL}'
+
+    mailhog:
+        image: mailhog/mailhog
+        container_name: '${PROJECT_NAME}_mailhog'
+        networks:
+            - default
+            - traefik
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=8025'
+            - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+
+    pma:
+        image: phpmyadmin/phpmyadmin
+        container_name: '${PROJECT_NAME}_pma'
+        networks:
+            - default
+            - traefik
+        environment:
+            PMA_HOST: $DB_HOST
+            PMA_USER: $DB_USER
+            PMA_PASSWORD: $DB_PASSWORD
+            PHP_UPLOAD_MAX_FILESIZE: $PHP_UPLOAD_MAX_FILESIZE
+            PHP_MAX_INPUT_VARS: $PHP_MAX_INPUT_VARS
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:pma.${PROJECT_BASE_URL}'
+
+    webgrind:
+        image: 'wodby/webgrind:$WEBGRIND_TAG'
+        container_name: '${PROJECT_NAME}_webgrind'
+        networks:
+            - default
+            - traefik
+        environment:
+            WEBGRIND_PROFILER_DIR: $WEBGRIND_PROFILER_DIR
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=traefik'
+            - 'traefik.port=8080'
+            - 'traefik.frontend.rule=Host:webgrind.${PROJECT_BASE_URL}'
+        volumes:
+            - './files/xdebug:/mnt/files/xdebug'
+
+networks:
+
+  traefik:
+    external: true
