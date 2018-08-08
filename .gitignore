@@ -1,0 +1,12 @@
+# Upstream dependencies.
+/vendor
+/node_modules
+
+# Build output
+/build
+/CHANGELOG.md
+/VERSION
+
+# Site Content
+/web
+salt.txt
