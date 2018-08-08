@@ -1,0 +1,10 @@
+name = Bootstrap Modal forms
+description = This module uses Bootstrap components to render modal forms.
+core = 7.x
+version = 7.x-1.x-dev
+
+configure = admin/config/user-interface/bootstrap_modal_forms
+; Information added by drush on 2017-02-28
+version = "7.x-1.x-dev"
+project = "bootstrap_modal_forms"
+datestamp = "1488315780"

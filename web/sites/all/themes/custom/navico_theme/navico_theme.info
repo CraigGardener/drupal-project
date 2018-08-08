@@ -1,0 +1,4 @@
+name = Navico Theme
+description = Bootstrap based Material Design theme for Navico's Drupal sites.
+core = 7.x
+base theme = bootstrap

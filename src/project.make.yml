@@ -1,0 +1,22 @@
+api: 2
+core: 7.x
+
+defaults:
+  projects:
+    subdir: contrib
+    type: module
+
+includes:
+  # Includes a file in the same directory.
+  - "apigee.make"
+
+projects:
+
+  # Drupal Core
+  drupal:
+    version: "7.59"
+
+  bootstrap:
+    version: ~
+
+  # Project-specific Dependencies

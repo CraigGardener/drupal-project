@@ -1,0 +1,5 @@
+drush_version: 8
+
+filemount: /files
+
+web_docroot: true

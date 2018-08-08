@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>SyntaxHighlighter Build Test Page</title>
+	<script type="text/javascript" src="Scripts/shCore.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushAS3.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushBash.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushCpp.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushCSharp.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushCss.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushDelphi.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushDiff.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushGroovy.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushJava.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushJScript.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushPerl.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushPhp.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushPlain.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushPython.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushRuby.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushScala.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushSql.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushVb.js"></script>
+	<script type="text/javascript" src="Scripts/shBrushXml.js"></script>
+	<link type="text/css" rel="stylesheet" href="Styles/shCore.css"/>
+	<link type="text/css" rel="Stylesheet" href="Styles/shThemeDefault.css" id="theme" />
+</head>
+
+<body>
+
+<style>
+.class_name {
+	border: 5px solid silver;
+}
+
+div {
+	margin-bottom: 1em;
+	font-size: 9px;
+}
+
+#content code {
+	background-color: red;
+	min-height: 500px;
+}
+</style>
+
+<select onchange="onThemeChange(this)">
+	<option value="#FFF|shThemeDefault.css" selected="true">Default</option>
+	<option value="#000|shThemeDjango.css">Django</option>
+	<option value="#fff|shThemeEclipse.css">Eclipse</option>
+	<option value="#000|shThemeEmacs.css">Emacs</option>
+	<option value="#000|shThemeFadeToGrey.css">FadeToGrey</option>
+	<option value="#000|shThemeMidnight.css">Midnight</option>
+	<option value="#000|shThemeRDark.css">RDark</option>
+</select>
+
+<h1>2.0 tests</h1>
+
+<h2>Basic test</h2>
+<div id="content" style="font-size: 1em">
+<pre class="brush: as3;">
+package free.cafekiwi.gotapi;
+
+function foo()
+{
+	/* 
+	
+	comment 
+	
+	*/
+	
+	// comment
+	
+	"string"
+	
+	'string'
+	
+	"multiline
+	string shouldnt match"
+
+	'multiline
+	string shouldnt match'
+}
+
+// &lt;http://www.gnu.org/licenses/?test=1&y=2&gt;.
+// &lt; http://www.gnu.org/licenses/?test=1&y=2 &gt;.
+</pre>
+</div>
+
+<h2>SCRIPT tag test</h2>
+<script type="syntaxhighlighter" class="brush: csharp"><![CDATA[
+// <http://alex:123@www.gnu.org/licenses/?test=1&y=2>.
+// < http://www.gnu.org/licenses/?test=1&y=2 >.
+
+partial class Foo
+{
+	function test()
+	{
+		yield return;
+		yield break;
+	}
+}
+
+partial;
+yield;
+
+@"C:\MyFolder\MyFile.txt"               // same as "C:\\MyFolder\\MyFile.txt"
+@"Line 1
+Line2"                                  // same as "Line 1\r\nLine2"
+@"string with ""inner"" quotes"         // same as "string with \"inner\" quotes"
+
+function foo()
+{
+	var vector:Vector.<Vector.<String>> = new Vector<Vector.String>>();
+	
+	for (var i = 0; i < 10; i++)
+	{
+		/* comments */
+	}
+}
+]]></script>
+
+<h2>No controls</h2>
+<script type="syntaxhighlighter" class="brush: xml; controls: false"><![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<playlist version="1" xmlns = "http://xspf.org/ns/0/">
+  <title>XSPF Test Playlist (songs from PGS3000)</title>
+  <trackList>
+    <track>
+      <location>http://www.example.com/song1.mp3</location>
+    </track>
+    <track>
+      <location>http://www.example.com/song2.mp3</location>
+    </track>
+    <track>
+      <location>http://www.example.com/song3.mp3</location>
+    </track>
+  </trackList>
+</playlist>
+
+<root>
+	<!--
+		Multiline test
+		hey
+	-->
+</root>
+]]></script>
+<pre class="brush: xml; controls: false">
+&lt;root>
+	&lt;!--
+		Multiline test
+		test
+	-->
+&lt;/root>
+</pre>
+
+<h2>Freeze test</h2>
+<pre class="brush: cpp; toolbar: false">
+ Open quote cases it ".........................................................
+</pre>
+
+<h2>No gutter and unindent</h2>
+<pre class="brush: java; gutter: false">
+			/**
+			 * Returns an Image object that can then be painted on the screen. 
+			 * The url argument must specify an absolute {@link URL}. The name
+			 * argument is a specifier that is relative to the url argument. 
+			 * &lt;p>
+			 * This method always returns immediately, whether or not the 
+			 * image exists. When this applet attempts to draw the image on
+			 * the screen, the data will be loaded. The graphics primitives 
+			 * that draw the image will incrementally paint on the screen. 
+			 *
+			 * @param  url  an absolute URL giving the base location of the image
+			 * @param  name the location of the image, relative to the url argument
+			 * @return      the image at the specified URL
+			 * @see         Image
+			 */
+			public Image getImage(URL url, String name) {
+				try {
+					/*
+					   Regular multiline comment.
+					*/
+				    return getImage(new URL(url, name));
+				} catch (MalformedURLException e) {
+				    return null;
+				}
+			}
+</pre>
+
+
+<h2>Collapse</h2>
+<pre class="brush: groovy; collapse: true">
+package free.cafekiwi.gotapi;
+1
+2
+3
+</pre>
+
+
+<h2>First line</h2>
+<pre class="brush: groovy; first-line: 10">
+package free.cafekiwi.gotapi;
+1
+2
+3
+</pre>
+
+
+<h2>Light</h2>
+<pre class="brush: groovy; light: true">
+package free.cafekiwi.gotapi;
+1
+2
+3
+</pre>
+
+
+<h2>Class Name</h2>
+<pre class="brush: groovy; class-name: 'class_name'">
+package free.cafekiwi.gotapi;
+1
+2
+3
+</pre>
+
+<h2>Highlight lines</h2>
+<pre class="brush: groovy; highlight: 2">
+1
+2
+3
+4
+</pre>
+<script type="syntaxhighlighter" class="brush: as3; highlight: [2, 4, 12]"><![CDATA[
+	/**
+	 * Checks a password and returns a value indicating whether the password is a "strong" 
+	 * password. The criteria for a strong password are:
+	 * 
+	 * <ul>
+	 *   <li>Minimum 8 characters</li>
+	 *   <li>Maxmium 32 characters</li>
+	 *   <li>Contains at least one lowercase letter</li>
+	 *   <li>Contains at least one uppercase letter</li>
+	 *   <li>Contains at least one number or symbol character</li>
+	 * </ul>
+	 * 
+	 * @param password The password to check
+	 * 
+	 * @return A value indicating whether the password is a strong password (<code>true</code>) 
+	 * or not (<code>false</code>).
+	 */
+	public function validateStrongPassword(password:String):Boolean
+	{
+		if (password == null || password.length <= 0)
+		{
+			return false;
+		}
+		
+		return STRONG_PASSWORD_PATTERN.test(password);
+	}
+]]></script>
+
+<h2>HTML Script</h2>
+<pre class="brush: groovy; html-script: true">
+&lt;hello>
+	&lt;%
+		package free.cafekiwi.gotapi;
+	%>
+&lt;/hello>
+
+<!--
+	Comments here
+-->
+</pre>
+
+<h2>Smart tabs</h2>
+<pre class="brush: groovy;">
+123	12	12	1
+	123	12	12	1
+</pre>
+
+<h2>Smart tab size</h2>
+<pre class="brush: groovy; tab-size: 8;">
+1234567	1234	12	1
+	1234	12	12	1
+</pre>
+
+<h2>No smart tabs</h2>
+<pre class="brush: groovy; smart-tabs: false">
+123	12	12	1
+	123	12	12	1
+</pre>
+
+<h2>Hanselman &lt;br /> test</h2>
+<pre class="brush: js;">
+	function onThemeChange(sender)<br/>
+	{<br/>
+		var parts = sender.value.split('|');<br/>
+		document.getElementById("theme").href = "Styles/" + parts[1];<br/>
+		document.body.style.backgroundColor = parts[0];<br/>
+	}<br/>
+</pre>
+
+<h2>Wrapping test</h2>
+<pre class="brush: js;">
+	function onThemeChange(sender)
+	{
+		var parts = sender.value.split('|');
+		document.getElementById("theme").href = "Styles/" + parts[1];
+		document.body.style.backgroundColor = parts[0];
+		// this would be a pretty long line The "Corresponding Application Code" for a Combined Work means the object code and/or source code for the Application, including any data and utility programs needed for reproducing the Combined Work from the Application, but excluding the System Libraries of the Combined Work.
+	}
+</pre>
+
+
+<h2>No wrapping test</h2>
+<pre class="brush: js; wrap-lines: false">
+	function onThemeChange(sender)
+	{
+		var parts = sender.value.split('|');
+		document.getElementById("theme").href = "Styles/" + parts[1];
+		document.body.style.backgroundColor = parts[0];
+		// this would be a pretty long line The "Corresponding Application Code" for a Combined Work means the object code and/or source code for the Application, including any data and utility programs needed for reproducing the Combined Work from the Application, but excluding the System Libraries of the Combined Work.
+	}
+</pre>
+
+<script type="text/javascript">
+SyntaxHighlighter.config.clipboardSwf = 'Scripts/clipboard.swf';
+SyntaxHighlighter.config.stripBrs = true;
+SyntaxHighlighter.all();
+
+function onThemeChange(sender)
+{
+	var parts = sender.value.split('|');
+	document.getElementById("theme").href = "Styles/" + parts[1];
+	document.body.style.backgroundColor = parts[0];
+}
+</script>
+
+</body>
+</html>
