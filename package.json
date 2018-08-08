@@ -26,6 +26,7 @@
     "branch": "develop",
     "verifyConditions": [],
     "prepare": [
+      "@semantic-release/changelog"
     ],
     "publish": [
       {
