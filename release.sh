@@ -8,7 +8,7 @@ devBranch=develop
 masterBranch=master
 releaseBranch=master
 
-mv CHANGELOG.md CHANGELOG.md.tmp
+mv CHANGELOG.md CHANGELOG.md.$versionLabel
 
 # create the release branch from the -develop branch
 git checkout $releaseBranch
@@ -21,7 +21,13 @@ echo "$versionLabel" > $versionFile
 
 git merge --no-ff --no-commit $devBranch
 
-mv CHANGELOG.md.tmp CHANGELOG.md
+touch CHANGELOG.md
+
+cat CHANGELOG.md.$versionLabel <(echo) CHANGELOG.md > CHANGELOG.md.new
+
+mv CHANGELOG.md.new CHANGELOG.md
+
+rm CHANGELOG.md.$versionLabel
 
 git add -f VERSION CHANGELOG.md
 
