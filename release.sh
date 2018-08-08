@@ -51,6 +51,7 @@ mkdir -p web/sites/default/files
 rm -rf web/sites/default/files
 cd web/sites/default/
 ln -s ../../../files/drupal/default/public files
+cd ../../../
 git add -f web/sites/default/files
 
 git commit -am "chore(release): Build $versionLabel"
